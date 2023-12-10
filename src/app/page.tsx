@@ -1,3 +1,9 @@
+import NoResults from "@/components/marketplace/noresults";
+
 export default function Home() {
-  return <></>;
+  return (
+    <>
+      <p>root</p>
+    </>
+  );
 }
