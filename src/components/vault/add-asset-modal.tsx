@@ -15,7 +15,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { useToast } from "@/components/ui/use-toast";
 
 import { IoIosAddCircleOutline } from "react-icons/io";
 import * as z from "zod";
@@ -62,15 +61,20 @@ const AddAssetModal = ({ mutation, successToastFunc, errorToastFunc }) => {
     const response = await create_ip(values);
     if (response) {
       form.reset();
-      onClose();
       successToastFunc(
         values.asset_name,
         values.asset_category,
-        values.asset_stage
+        values.asset_stage,
+        "Added"
       );
       mutation("/get/portfolio");
     } else {
-      errorToastFunc();
+      errorToastFunc(
+        values.asset_name,
+        values.asset_category,
+        values.asset_stage,
+        "add"
+      );
     }
   };
 
