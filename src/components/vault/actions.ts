@@ -10,7 +10,7 @@ export async function get_portfolio() {
 
 export const create_ip = async (ip_data) => {
   try {
-    const response = await fetch(`http://localhost:4000/vault`, {
+    const response = await fetch(`http://localhost:4000/vault/asset`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -21,5 +21,21 @@ export const create_ip = async (ip_data) => {
     return { data: response.json() };
   } catch (e) {
     return { error: "error posting" };
+  }
+};
+
+export const delete_ip = async (ip_data) => {
+  try {
+    const response = await fetch(`http://localhost:4000/vault/asset`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(ip_data),
+    });
+    return { data: response.json() };
+  } catch (e) {
+    return { error: "error delete" };
   }
 };

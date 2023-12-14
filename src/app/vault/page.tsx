@@ -1,10 +1,9 @@
 "use client";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
+import AddAssetModal from "@/components/vault/add-asset-modal";
 import VaultTable from "@/components/vault/vault-table";
 import useSWR from "swr";
-import AddAssetModal from "@/components/vault/add-asset-modal";
-import { useToast } from "@/components/ui/use-toast";
-import { Toaster } from "@/components/ui/toaster";
-import { Toast } from "@/components/ui/toast";
 
 async function get_portfolio() {
   const response = await fetch(`http://localhost:4000/portfolio/algofi`);
@@ -28,21 +27,23 @@ const Vault = () => {
   const successToast = (
     ip_name: string,
     ip_category: string,
-    ip_stage: string
+    ip_stage: string,
+    action: "Added" | "Deleted" | "Edited"
   ) => {
     toast({
-      title: "IP Successfully Added",
-      description: `${ip_name} - ${ip_category} = ${ip_stage}`,
+      title: `Success: IP ${action}`,
+      description: `${ip_name} - ${ip_category} - ${ip_stage}`,
     });
   };
 
   const errorToast = (
     ip_name: string,
     ip_category: string,
-    ip_stage: string
+    ip_stage: string,
+    action: "add" | "delete" | "edit"
   ) => {
     toast({
-      title: "Unable to add IP",
+      title: `Error: Unable to ${action} IP`,
       description: `${ip_name} - ${ip_category} = ${ip_stage}`,
     });
   };
@@ -62,7 +63,12 @@ const Vault = () => {
           />
           <Toaster />
         </div>
-        <VaultTable assets={data.assets} />
+        <VaultTable
+          assets={data.assets}
+          mutateFunc={mutate}
+          successToast={successToast}
+          errorToast={errorToast}
+        />
       </div>
     </>
   );
