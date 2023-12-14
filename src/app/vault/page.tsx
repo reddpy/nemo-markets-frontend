@@ -2,6 +2,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import AddAssetModal from "@/components/vault/add-asset-modal";
+import UploadFilesForm from "@/components/vault/upload-files";
 import VaultTable from "@/components/vault/vault-table";
 import useSWR from "swr";
 
@@ -19,9 +20,10 @@ const Vault = () => {
     fetcher,
     {
       revalidateOnMount: true,
-      revalidateOnFocus: true,
+      revalidateOnFocus: false,
     }
   );
+  console.log("refreshing for some reason");
 
   const { toast } = useToast();
   const successToast = (
@@ -70,6 +72,7 @@ const Vault = () => {
           errorToast={errorToast}
         />
       </div>
+      <UploadFilesForm />
     </>
   );
 };
