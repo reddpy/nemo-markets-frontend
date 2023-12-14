@@ -24,6 +24,22 @@ export const create_ip = async (ip_data) => {
   }
 };
 
+export const update_ip = async (ip_data) => {
+  try {
+    const response = await fetch(`http://localhost:4000/vault/asset`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(ip_data),
+    });
+    return { data: response.json() };
+  } catch (e) {
+    return { error: "error posting" };
+  }
+};
+
 export const delete_ip = async (ip_data) => {
   try {
     const response = await fetch(`http://localhost:4000/vault/asset`, {

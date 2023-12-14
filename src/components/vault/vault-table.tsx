@@ -16,8 +16,10 @@ import {
 import { useAsyncList } from "@react-stately/data";
 import { useCallback, useState } from "react";
 import DeleteAssetModel from "./delete-asset-modal";
-
+import { LiaEdit } from "react-icons/lia";
+import { CiTrash } from "react-icons/ci";
 import { CgMoreO } from "react-icons/cg";
+import EditAssetModal from "./edit-asset-modal";
 let USDollar = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -27,6 +29,7 @@ let USDollar = new Intl.NumberFormat("en-US", {
 const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [selectedData, setSelectedData] = useState({});
 
   let list = useAsyncList({
@@ -76,14 +79,27 @@ const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem
+                  onClick={() => {
+                    setSelectedData(portfolio_item);
+                    setShowEdit(true);
+                  }}
+                >
+                  <div className="flex flex-row">
+                    <LiaEdit size={20} />
+                    <span className="ml-4">Edit</span>
+                  </div>
+                </DropdownItem>
                 <DropdownItem
                   onClick={() => {
                     setSelectedData(portfolio_item);
                     setShowDelete(true);
                   }}
                 >
-                  Delete
+                  <div className="flex flex-row">
+                    <CiTrash size={20} />
+                    <span className="ml-4">Remove</span>
+                  </div>
                 </DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -103,6 +119,16 @@ const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
           asset_obj={selectedData}
           mutateFunc={mutateFunc}
           deleteToastFunc={successToast}
+          errorToastFunc={errorToast}
+        />
+      )}
+      {showEdit && (
+        <EditAssetModal
+          opened={showEdit}
+          openChanged={setShowEdit}
+          asset_obj={selectedData}
+          mutateFunc={mutateFunc}
+          successToastFunc={successToast}
           errorToastFunc={errorToast}
         />
       )}
