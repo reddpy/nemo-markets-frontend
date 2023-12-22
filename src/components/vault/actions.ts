@@ -1,12 +1,25 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import axios from "axios";
 
 export async function get_portfolio() {
   const response = await fetch(`http://localhost:4000/portfolio/algofi`);
   const portfolio_data = await response.json();
   return portfolio_data;
 }
+
+export const update_listing_status = async (listing_payload) => {
+  try {
+    const response = await axios.patch(
+      "http://localhost:4000/vault/market-status",
+      listing_payload,
+    );
+    return { data: response.data };
+  } catch (e) {
+    console.log(e);
+    return { error: "error posting" };
+  }
+};
 
 export const create_ip = async (ip_data) => {
   try {
