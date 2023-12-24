@@ -26,12 +26,19 @@ let USDollar = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 0,
 });
 
-const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
+const VaultTable = ({
+  assets,
+  mutateFunc,
+  successToast,
+  errorToast,
+  listing_status,
+}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [showDelete, setShowDelete] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [selectedData, setSelectedData] = useState({});
 
+  const asset_count: number = assets.length;
   let list = useAsyncList({
     async load() {
       setIsLoading(false);
@@ -66,7 +73,7 @@ const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
         return <p className="font-semibold">{dollar_val}</p>;
       case "actions":
         return (
-          <div className="relative flex justify-end items-center gap-2">
+          <div className="relative flex items-center justify-end gap-2">
             <Dropdown>
               <DropdownTrigger>
                 <Button
@@ -120,6 +127,8 @@ const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
           mutateFunc={mutateFunc}
           deleteToastFunc={successToast}
           errorToastFunc={errorToast}
+          asset_count={asset_count}
+          listing_status={listing_status}
         />
       )}
       {showEdit && (
@@ -136,7 +145,7 @@ const VaultTable = ({ assets, mutateFunc, successToast, errorToast }) => {
         aria-label="Example table with client side sorting"
         sortDescriptor={list.sortDescriptor}
         onSortChange={list.sort}
-        className="xl:max-h-[500px] lg:max-h-[275px] md:max-h-[250px]"
+        className="md:max-h-[250px] lg:max-h-[275px] xl:max-h-[500px]"
         isHeaderSticky
         classNames={{
           wrapper:

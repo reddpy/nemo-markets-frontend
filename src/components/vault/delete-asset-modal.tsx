@@ -27,6 +27,8 @@ const DeleteAssetModel = ({
   mutateFunc,
   deleteToastFunc,
   errorToastFunc,
+  asset_count,
+  listing_status,
 }) => {
   const form = useForm<z.infer<typeof certifiedSchema>>({
     resolver: zodResolver(certifiedSchema),
@@ -42,7 +44,7 @@ const DeleteAssetModel = ({
         asset_obj.name,
         asset_obj.category,
         asset_obj.stage,
-        "Deleted"
+        "Deleted",
       );
       mutateFunc("/get/portfolio");
     } else {
@@ -50,7 +52,7 @@ const DeleteAssetModel = ({
         asset_obj.name,
         asset_obj.category,
         asset_obj.stage,
-        "delete"
+        "delete",
       );
     }
   };
@@ -94,6 +96,17 @@ const DeleteAssetModel = ({
                             <FormLabel className="ml-4" htmlFor="certified">
                               Checking this box certifies you want to remove
                               this IP from your vault
+                              {asset_count == 1 && listing_status && (
+                                <>
+                                  <br />
+                                  <br />
+                                  <span className="font-bold text-red-500">
+                                    Note: your portfolio will be unlisted from
+                                    the marketplace since your vault will be
+                                    empty.
+                                  </span>
+                                </>
+                              )}
                             </FormLabel>
                           </div>
                         </>
