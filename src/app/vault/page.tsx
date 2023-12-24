@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import AddAssetModal from "@/components/vault/add-asset-modal";
 import VaultTable from "@/components/vault/vault-table";
+import PortfolioSettingsModal from "@/components/vault/portfolio-settings-modal";
 import useSWR from "swr";
 
 async function get_portfolio() {
@@ -19,8 +20,8 @@ const Vault = () => {
     fetcher,
     {
       revalidateOnMount: true,
-      revalidateOnFocus: true,
-    }
+      revalidateOnFocus: false,
+    },
   );
 
   const { toast } = useToast();
@@ -28,7 +29,7 @@ const Vault = () => {
     ip_name: string,
     ip_category: string,
     ip_stage: string,
-    action: "Added" | "Deleted" | "Edited"
+    action: "Added" | "Deleted" | "Edited",
   ) => {
     toast({
       title: `Success: IP ${action}`,
@@ -40,7 +41,7 @@ const Vault = () => {
     ip_name: string,
     ip_category: string,
     ip_stage: string,
-    action: "add" | "delete" | "edit"
+    action: "add" | "delete" | "edit",
   ) => {
     toast({
       title: `Error: Unable to ${action} IP`,
@@ -55,12 +56,26 @@ const Vault = () => {
   return (
     <>
       <div className="flex flex-col">
-        <div className="flex w-full shadow-xl rounded-lg border border-solid border-nemo-blue p-2 mb-2 justify-end">
-          <AddAssetModal
-            mutation={mutate}
-            successToastFunc={successToast}
-            errorToastFunc={errorToast}
-          />
+        <div className="border-nemo-blue mb-2 flex w-full justify-between rounded-lg border border-solid p-2 shadow-xl">
+          <div id="status_details" className="w-full">
+            <div className="text-nemo-blue mt-1 space-x-2 text-xl font-bold">
+              Market Listing:
+              <span className="ml-2 font-light">
+                {data?.listed ? "Live" : "Offline"}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex flex-row">
+            <AddAssetModal
+              mutation={mutate}
+              successToastFunc={successToast}
+              errorToastFunc={errorToast}
+            />
+
+            <PortfolioSettingsModal mutation={mutate} portfolio_data={data} />
+          </div>
+
           <Toaster />
         </div>
         <VaultTable

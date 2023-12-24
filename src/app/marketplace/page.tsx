@@ -6,7 +6,9 @@ import AssetFilter from "@/components/marketplace/asset-filter";
 import SectorFilter from "@/components/marketplace/sector-filter";
 
 export async function getData() {
-  const response = await fetch("http://localhost:4000/marketplace");
+  const response = await fetch("http://localhost:4000/marketplace", {
+    cache: "no-store",
+  });
   const data = await response.json();
   return data.portfolios;
 }
@@ -22,14 +24,14 @@ const MarketPlace = async () => {
     <>
       <div className="flex flex-col">
         <Search />
-        <div className="flex flex-row mt-2 ml-1 mr-1 rounded-lg border border-solid">
+        <div className="ml-1 mr-1 mt-2 flex flex-row rounded-lg border border-solid">
           {/* <span className="text-xs pt-3 pl-3 ">Filters: </span>
           <SectorFilter />
           <AssetFilter /> */}
         </div>
       </div>
-      <div className="rounded-xl shadow-inner bg-slate-100 	overflow-y-auto h-[83%] p-2 mt-2 scrollbar-thin scrollbar-thumb-nemo-blue scrollbar-track-gray-100">
-        <div className="justify-center flex flex-wrap flex-row gap-4 ">
+      <div className="scrollbar-thin scrollbar-thumb-nemo-blue scrollbar-track-gray-100 	mt-2 h-[83%] overflow-y-auto rounded-xl bg-slate-100 p-2 shadow-inner">
+        <div className="flex flex-row flex-wrap justify-center gap-4 ">
           {market_listings.length > 0 ? market_listings : <NoResults />}
         </div>
       </div>
