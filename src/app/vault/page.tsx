@@ -7,7 +7,7 @@ import PortfolioSettingsModal from "@/components/vault/portfolio-settings-modal"
 import useSWR from "swr";
 
 async function get_portfolio() {
-  const response = await fetch(`http://localhost:4000/portfolio/algofi`);
+  const response = await fetch(`http://localhost:4000/portfolio/olive-ai`);
   const portfolio_data = await response.json();
   return portfolio_data;
 }
@@ -58,10 +58,20 @@ const Vault = () => {
       <div className="flex flex-col">
         <div className="border-nemo-blue mb-2 flex w-full justify-between rounded-lg border border-solid p-2 shadow-xl">
           <div id="status_details" className="w-full">
-            <div className="text-nemo-blue mt-1 space-x-2 text-xl font-bold">
-              Market Listing:
-              <span className="ml-2 font-light">
-                {data?.listed ? "Live" : "Offline"}
+            <div className="text-nemo-blue mt-1 flex flex-row space-x-2 text-xl">
+              Marketplace Listing:
+              <span className="ml-2 font-bold">
+                {data?.listed ? (
+                  <span className="flex flex-row">
+                    Live
+                    <span className="me-3 flex h-3 w-3 animate-pulse rounded-full bg-green-500"></span>
+                  </span>
+                ) : (
+                  <span className="flex flex-row text-gray-400">
+                    Offline
+                    <span className="me-3 flex h-3 w-3 animate-pulse rounded-full bg-red-500"></span>
+                  </span>
+                )}
               </span>
             </div>
           </div>
@@ -83,6 +93,7 @@ const Vault = () => {
           mutateFunc={mutate}
           successToast={successToast}
           errorToast={errorToast}
+          listing_status={data.listed}
         />
       </div>
     </>

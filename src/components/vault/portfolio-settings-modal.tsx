@@ -1,4 +1,5 @@
 "use client";
+
 import { Switch } from "../ui/switch";
 import {
   Button,
@@ -36,7 +37,7 @@ const settingSchema = z.object({
 
 const PortfolioSettingsModal = ({ mutation, portfolio_data }) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-  const number_of_assets = portfolio_data.asset_count;
+  const number_of_assets: number = portfolio_data.asset_count;
 
   const form = useForm<z.infer<typeof settingSchema>>({
     resolver: zodResolver(settingSchema),
@@ -61,11 +62,12 @@ const PortfolioSettingsModal = ({ mutation, portfolio_data }) => {
       <ShadBtn
         onClick={onOpen}
         size="icon"
-        className="bg-nemo-blue hover:text-nemo-blue hover:border-nemo-blue horver:border-solid rounded-3xl text-white hover:border hover:bg-white"
+        className="bg-nemo-blue hover:text-nemo-blue
+        hover:border-nemo-blue horver:border-solid rounded-3xl
+        text-white hover:border hover:bg-white"
       >
         <CiSettings size={20} />
       </ShadBtn>
-
       <Modal
         placement="top"
         backdrop="blur"
@@ -95,7 +97,13 @@ const PortfolioSettingsModal = ({ mutation, portfolio_data }) => {
                         </FormLabel>
                         <FormDescription>
                           List your portfolio on the Nemo Marketplace to be
-                          viewed
+                          viewed. <br />
+                          {number_of_assets == 0 && (
+                            <span className="text-red-500">
+                              cannot list on marketplace becuase you have no
+                              assets in your vault.
+                            </span>
+                          )}
                         </FormDescription>
                       </div>
                       <FormControl>
@@ -133,7 +141,9 @@ const PortfolioSettingsModal = ({ mutation, portfolio_data }) => {
                     <Button
                       className="bg-nemo-blue text-white"
                       type="submit"
-                      isDisabled={!form.formState.isDirty}
+                      isDisabled={
+                        !form.formState.isDirty || number_of_assets == 0
+                      }
                     >
                       Save Changes
                     </Button>
