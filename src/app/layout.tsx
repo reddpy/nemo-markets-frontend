@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import NemoTopNavbar from "@/components/navigation/nemotopnav";
 import NemoSideMenu from "@/components/navigation/nemosidemenu";
-import { ClerkProvider } from "@clerk/nextjs";
+// import { ClerkProvider } from "@clerk/nextjs";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,29 +18,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={inter.className}>
-          <NemoTopNavbar />
-          <div className="flex flex-row mb-2 min-h-[90vh]">
-            <NemoSideMenu />
-            <div
-              className="
-            border 
-            rounded-lg 
-            shadow-lg 
-            w-full
+    <html lang="en">
+      <body className={inter.className}>
+        <NemoTopNavbar />
+        <div className="mb-2 flex min-h-[90vh] flex-row">
+          <NemoSideMenu />
+          <div
+            className="
+            h-fill
             ml-1
             mr-2
+            w-full
+            rounded-lg
+            border
             p-1
-            h-fill
+            shadow-lg
             "
-            >
-              {children}
-            </div>
+          >
+            {children}
           </div>
-        </body>
-      </html>
-    </ClerkProvider>
+        </div>
+      </body>
+    </html>
   );
 }
